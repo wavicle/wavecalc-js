@@ -1,1 +1,84 @@
-Welcome to my WAVE Calculator!
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>WAVE Calculator for Weighted Decision Making</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.min.css">
+      <link rel="stylesheet" href="styles.css">
+   </head>
+   <body>
+      <div class="container mt-5">
+         <ul class="nav nav-tabs" id="myTabs">
+            <li class="nav-item">
+               <a class="nav-link active" id="tab1" data-toggle="tab" href="#content1">Feature/Product Scores</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" id="tab2" data-toggle="tab" href="#content2"
+                  onclick="updateMatrixWithRootInputs()">Work Sheet</a>
+            </li>
+         </ul>
+         <div class="tab-content">
+            <div class="tab-pane fade show active" id="content1">
+               <div style="margin: 20px 0px 20px 0px;">
+                 <button class="btn btn-success" onclick="uploadCoreInputs()">Upload Core Inputs</button>
+                 <button class="btn btn-success" onclick="saveFile()">Save File</button>
+               </div>
+               <div id="yamlEditor" style="width: 100%; height: 600px;"></div>
+            </div>
+            <div class="tab-pane fade" id="content2">
+                <script id="matrix-template" type="text/x-handlebars-template">
+                    <div style="margin: 20px 0px 20px 0px;">
+                      <button class="btn btn-success" onclick="chooseWeightsFile()">Upload Weights</button>
+                      <button class="btn btn-success" onclick="saveWeightsToFile()">Save Weights</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Custom Weights</th>
+                            {{#each columns}}
+                                <th>{{this.title}}</th>
+                            {{/each}}
+                        </tr>
+                        {{#each rows}}
+                            <tr>
+                                <th>{{this.title}}</th>
+                                <td>
+                                    <input 
+                                        type="number" 
+                                        name="customWeight" 
+                                        id="{{this.id}}-customWeight" 
+                                        value="1" 
+                                        data-feature-id="{{this.id}}"
+                                        onchange="refreshMatrix()">
+                                </td>
+                                {{#each ../columns}}
+                                    <td id="{{../this.id}}-{{this.id}}-cell"></td>
+                                {{/each}}
+                            </tr>
+                        {{/each}}
+                        <tr>
+                            <th>Total</th>
+                            <td></td>
+                            {{#each columns}}
+                                <td class="total-cell" id="{{this.id}}-total-cell"></td>
+                            {{/each}}
+                        </tr>
+                    </table>
+               </script>
+               <div id="worksheet"></div>
+            </div>
+         </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+      <script src="fileuploader.js"></script>
+      <script src="tab1scripts.js"></script>
+      <script src="tab2scripts.js"></script>
+
+   </body>
+</html>
